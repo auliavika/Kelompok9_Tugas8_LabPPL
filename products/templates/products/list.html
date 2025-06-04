@@ -1,0 +1,142 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Produk</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #4b3c88;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            transition: background-color 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn-success {
+            background: #764ba2;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #667eea;
+        }
+
+        .btn-warning {
+            background: #f0ad4e;
+            border: none;
+        }
+
+        .btn-danger {
+            background: #d9534f;
+            border: none;
+        }
+
+        .list-group-item {
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .list-group-item:hover {
+            background-color: #f9f9fb;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .product-price {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📦 Daftar Produk</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="mb-4 text-end">
+        <a href="{% url 'product_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Tambah Produk
+        </a>
+    </div>
+
+    {% if products %}
+        <ul class="list-group">
+            {% for product in products %}
+                <li class="list-group-item py-3 px-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>{{ product.name }}</strong>
+                            <div class="product-description mb-1">
+                                {% if product.description %}
+                                    {{ product.description }}
+                                {% else %}
+                                    <em>Deskripsi tidak tersedia</em>
+                                {% endif %}
+                            </div>
+                            <div class="product-price">
+                                {% if product.price %}
+                                    Rp {{ product.price|intcomma }}
+                                {% else %}
+                                    <span class="text-muted fst-italic">Harga belum tersedia</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ms-3 text-nowrap">
+                            <a href="{% url 'product_update' product.pk %}" class="btn btn-sm btn-warning me-2">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'product_delete' product.pk %}" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info mt-3">Belum ada produk yang ditambahkan.</div>
+    {% endif %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
